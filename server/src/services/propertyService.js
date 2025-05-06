@@ -7,6 +7,8 @@ export const addProperty = async (property) => {
     await connection.beginTransaction();
 
     try {
+      console.log("Property data being inserted:", property); // Added logging for debugging
+
       // Get all property fields from the model, excluding non-database fields
       const propertyFields = Object.keys(property).filter(
         (key) =>
@@ -41,6 +43,9 @@ export const addProperty = async (property) => {
       if (property.mainImage) {
         values.push(property.mainImage);
       }
+
+      console.log("SQL Query:", query);
+      console.log("SQL Values:", values);
 
       const [result] = await connection.execute(query, values);
       const propertyId = result.insertId;

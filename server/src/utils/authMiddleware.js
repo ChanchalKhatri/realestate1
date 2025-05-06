@@ -5,20 +5,29 @@ export const verifyToken = async (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
+    console.log("No token found in request");
     // Allow the request to proceed without authentication
     // Controllers will handle permission checks for protected routes
     return next();
   }
 
   try {
+    console.log("Verifying token:", token.substring(0, 10) + "...");
     // Verify the token and get user data
     const response = await getUserFromToken(token);
 
     if (response.success) {
       // Set the user data on the request object
       req.user = response.data;
+      console.log(
+        "Authentication successful. User ID:",
+        req.user.id,
+        "Role:",
+        req.user.role
+      );
       return next();
     } else {
+      console.log("Invalid token:", response.message);
       // Token is invalid, but still proceed (unauthenticated)
       return next();
     }

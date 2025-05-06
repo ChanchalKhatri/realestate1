@@ -72,6 +72,11 @@ export const createProperty = async (req, res) => {
       owner_id = req.user.id;
       // Set owner_type based on user role
       owner_type = req.user.role === "seller" ? "seller" : "admin";
+      console.log("User authenticated:", req.user);
+      console.log("Setting owner_id to:", owner_id);
+      console.log("Setting owner_type to:", owner_type);
+    } else {
+      console.log("No authenticated user found in request");
     }
 
     // Combine all properties into a single object
@@ -96,6 +101,12 @@ export const createProperty = async (req, res) => {
       owner_type, // Set based on user role
       ...additionalProperties,
     };
+
+    console.log("Final property data being sent to model:", {
+      ...propertyData,
+      owner_id,
+      owner_type,
+    });
 
     const property = new PropertyModel(propertyData);
 

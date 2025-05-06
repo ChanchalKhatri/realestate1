@@ -21,8 +21,12 @@ class PropertyModel {
     this.floor_number = property.floor_number || 0;
     this.total_floors = property.total_floors || 0;
     this.parking_spaces = property.parking_spaces || 0;
-    this.owner_id = property.owner_id || null;
-    this.owner_type = property.owner_type || "admin"; // Default to admin, can be "seller" or "admin"
+
+    // Explicitly set owner_id and owner_type to avoid null/undefined issues
+    // Use null for owner_id if not provided (will be stored as NULL in database)
+    this.owner_id = property.owner_id !== undefined ? property.owner_id : null;
+    // Default owner_type to 'admin' if not provided
+    this.owner_type = property.owner_type || "admin"; // Can be "seller" or "admin"
   }
 }
 
